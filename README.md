@@ -81,7 +81,7 @@ we could see metrics in Grafana dashboard itself.
 
 I have used Grafana loki for application logging with serilog. And you will be able to search
 logs with trace id and find all the logs related to functionality even when the flow involves
-intra service communications.
+inter service communications.
 
 ![](Images/Grafana%20Loki.png)
 
