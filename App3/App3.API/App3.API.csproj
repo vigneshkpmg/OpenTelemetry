@@ -29,7 +29,6 @@
         <PackageReference Include="Serilog.Enrichers.Span" Version="3.1.0" />
         <PackageReference Include="Serilog.Sinks.Console" Version="4.1.1-dev-00907" />
         <PackageReference Include="Serilog.Sinks.Grafana.Loki" Version="8.1.0" />
-        <PackageReference Include="Serilog.Sinks.GrafanaLoki" Version="1.1.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>
 
