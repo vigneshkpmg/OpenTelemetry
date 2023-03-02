@@ -1,0 +1,136 @@
+version: "3.9"
+volumes:
+  prometheus_data: {}
+  grafana_data: {}
+
+services:
+  sql:
+    ports:
+      - "1433:1433"
+    environment:
+      - MSSQL_SA_PASSWORD=Rain2night!
+      - ACCEPT_EULA=1
+  redis:
+    ports:
+      - 6379:6379
+    restart: always
+    volumes:
+      - ./data/redis:/data/redis
+  zookeeper:
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=2181
+      - ZOOKEEPER_TICK_TIME=2000
+    ports:
+      - 2181:2181
+  broker:
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT_DOCKER:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT_DOCKER://broker:29092,PLAINTEXT_HOST://localhost:9092
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1
+      - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
+      - KAFKA_JMX_PORT=9101
+      - KAFKA_JMX_HOSTNAME=localhost
+      - KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL=http://schema-registry:8081
+      - CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS=broker:29092
+      - CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS=1
+      - CONFLUENT_METRICS_ENABLE=true
+      - CONFLUENT_SUPPORT_CUSTOMER_ID=anonymous
+      - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT_DOCKER
+    ports:
+      - 9092:9092
+      - 9101:9101
+  prometheus:
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/etc/prometheus/console_libraries"
+      - "--web.console.templates=/etc/prometheus/consoles"
+      - "--storage.tsdb.retention.time=200h"
+      - "--web.enable-lifecycle"
+    restart: unless-stopped
+    ports:
+      - 9090:9090
+    labels:
+      org.label-schema.group: "monitoring"
+
+  grafana:
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+    environment:
+      - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    labels:
+      org.label-schema.group: "monitoring"
+  loki:
+    ports:
+      - "3100:3100"
+    command:
+      - --config.file=/mnt/config/loki.yaml
+    volumes:
+      - ./grafana/provisioning/loki.yaml:/mnt/config/loki.yaml:ro
+  tempo:
+    image: grafana/tempo:latest
+    command: ["-config.file=/etc/tempo.yaml"]
+    volumes:
+      - ./grafana/provisioning/tempo.yaml:/etc/tempo.yaml
+      - ./tempo-data/:/tmp/tempo
+    ports:
+      - "14268:14268" # jaeger ingest
+      - "3200:3200" # tempo
+      - "4317:4317" # otlp grpc
+      - "4318:4318" # otlp http
+      - "9411:9411" # zipkin
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    command: ["--config=/etc/otel-collector.yaml"]
+    volumes:
+      - ./grafana/provisioning/otel-collector.yaml:/etc/otel-collector.yaml
+#  jaeger:
+#    ports:
+#      - "16686:16686"
+#      # - '14268:14268'
+#      - "5775:5775/udp"
+#      - "6831:6831/udp"
+#      - "6832:6832/udp"
+#      - "5778:5778"
+#    environment:
+#      - COLLECTOR_OTLP_ENABLED=true
+#      - LOG_LEVEL=debug
+  init-kafka:
+    image: confluentinc/cp-kafka:7.3.0
+    depends_on:
+      - broker
+    entrypoint: ["/bin/sh", "-c"]
+    command: |
+      "
+      # blocks until kafka is reachable
+      kafka-topics --bootstrap-server broker:29092 --list
+
+      echo -e 'Creating kafka topics'
+      kafka-topics --bootstrap-server broker:29092 --create --if-not-exists --topic purchase --replication-factor 1 --partitions 1
+      kafka-topics --bootstrap-server broker:29092 --create --if-not-exists --topic purchase2 --replication-factor 1 --partitions 1
+
+      echo -e 'Successfully created the following topics:'
+      kafka-topics --bootstrap-server broker:29092 --list
+      "
+#  promtail:
+#    image: grafana/promtail:2.7.3
+#    volumes:
+#      - ./loki/:/var/log/
+#      - ./config:/etc/promtail/
+#    ports:
+#      - "9080:9080"
+#    command: -config.file=/etc/promtail/promtail.yaml
+

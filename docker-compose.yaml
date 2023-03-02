@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  
+  sql:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    container_name: sql
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.0
+    container_name: zookeeper
+  redis:
+    container_name: openTelemetry-redis
+    image: redis:latest
+  broker:
+    image: confluentinc/cp-kafka:7.3.0
+    container_name: broker
+    depends_on:
+      - zookeeper
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+  tempo:
+    image: grafana/tempo:latest
+    container_name: tempo
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    container_name: otel-collector
+#  jaeger:
+#    image: jaegertracing/all-in-one:latest

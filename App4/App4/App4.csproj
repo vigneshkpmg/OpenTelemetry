@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>dotnet-App4-EC9F5EBF-E152-4516-879A-5524E9A1F7CF</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Confluent.Kafka" Version="2.0.2" />
+        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="7.0.3" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+        <PackageReference Include="OpenTelemetry" Version="1.4.0" />
+        <PackageReference Include="OpenTelemetry.Exporter.Jaeger" Version="1.4.0" />
+        <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.4.0" />
+        <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.4.0" />
+        <PackageReference Include="OpenTelemetry.Instrumentation.StackExchangeRedis" Version="1.0.0-rc9.7" />
+        <PackageReference Include="prometheus-net" Version="8.0.0" />
+        <PackageReference Include="Serilog.AspNetCore" Version="6.1.1-dev-00295" />
+        <PackageReference Include="Serilog.Enrichers.Span" Version="3.1.0" />
+        <PackageReference Include="Serilog.Sinks.Grafana.Loki" Version="8.1.0" />
+        <PackageReference Include="Serilog.Sinks.GrafanaLoki" Version="1.1.1" />
+        <PackageReference Include="StackExchange.Redis" Version="2.6.96" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,17 @@
+.idea
+APP1/.idea
+APP1/APP1.API/bin
+APP1/APP1.API/obj
+App2/.idea
+App2/App2/bin
+App2/App2/obj
+App3/.idea
+App3/App3.API/bin
+App3/App3.API/obj
+App4/.idea
+App4/App4/bin
+App4/App4/obj
+data
+Executor/bin
+Executor/obj
+tempo-data
