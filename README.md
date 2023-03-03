@@ -8,10 +8,10 @@ http protocol and other one is asynchronous communication using kafka.
 2. It uses available open telemetry instrumentation library for asp.et core, http calls and SQL etc.
 3. It uses custom tracing for Kafka since there is no instrumentation library yet.
 4. It Uses Open telemetry exporter for collection of all the traces.
-5. It uses Prometheus for metrics collection and it is integrated with Grafana as metrics data source.
+5. It uses Prometheus for metrics collection and it is integrated with Grafana as a front end to display the metrics.
 6. It uses grafana as the backend for setting up of dashboards.
-7. Uses Prometheus Alerts manager for sending alerts.
-8. All data is getting stored locally now but can be integrated with different data source. For that, please look the documentation for each
+7. Uses Prometheus Alerts manager for sending alerts(yet to be implemented).
+8. All data is getting stored locally now but can be integrated with different data source. For that, please look the documentation for each.
 
 ## How to set up
 
