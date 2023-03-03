@@ -27,7 +27,7 @@ http protocol and other one is asynchronous communication using kafka.
 
 ### Here is the explanation of the flow.
 
-1. Executor is the worker service which makes 2 http post call to /PostMessage and /Message/Post-Message in App1(Api) for every 5000MS
+1. Executor is the worker service which makes 2 http post call to /Message and /Message/Post-Message in App1(Api) for every 5000MS
 2. /Message of App1 API makes call to another API App3(/PostMessage) and it will add the data to SQL DB.
 3. /Message/Post-Message of APP1 API will send a message to Kafka topic "Purchase" and returns a response.
 4. App2 which is a console application which will consume message from Kafka topic "Purchase" and sends it to App3 API(/Message/Post-Message).
