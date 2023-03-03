@@ -28,7 +28,7 @@ builder.Host.UseSerilog((context, provider, config) =>
 builder.Services.AddOpenTelemetry().WithTracing(b =>
 {
     b.AddAspNetCoreInstrumentation()
-        .AddSource(nameof(PublishMessageController))
+        .AddSource(nameof(MessageController))
         .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("App3"))
         .AddAspNetCoreInstrumentation()
         .AddSqlClientInstrumentation()

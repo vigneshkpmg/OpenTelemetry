@@ -24,7 +24,7 @@ builder.Services.AddOpenTelemetry().WithTracing(b =>
 {
     b.AddAspNetCoreInstrumentation()
         .AddHttpClientInstrumentation()
-        .AddSource(nameof(PublishMessageController))
+        .AddSource(nameof(MessageController))
         .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("App1"))
         .AddOtlpExporter(opts =>
         {

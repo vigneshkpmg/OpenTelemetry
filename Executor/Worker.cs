@@ -29,9 +29,9 @@ public class Worker : BackgroundService
                     Name = $"vignesh-{count}",
                     Email = $"vignesh-{count}@gmail.com"
                 };
-                await httpClient.PostAsync(_configuration.GetValue<string>("ApiUrl"),
+               var response = await httpClient.PostAsync(_configuration.GetValue<string>("ApiUrl"),
                     new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8,"application/json"), stoppingToken);
-                await httpClient.PostAsync($"{_configuration.GetValue<string>("ApiUrl")}/publish-message",
+               var response1 =await httpClient.PostAsync($"{_configuration.GetValue<string>("ApiUrl")}/publish-message",
                     new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8,"application/json"), stoppingToken);
                 _logger.LogInformation("Worker processing record: {Count}", count);
                 await Task.Delay(5000, stoppingToken);

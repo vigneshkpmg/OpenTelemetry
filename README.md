@@ -27,11 +27,11 @@ http protocol and other one is asynchronous communication using kafka.
 
 ### Here is the explanation of the flow.
 
-1. Executor is the worker service which makes 2 http post call to /PostMessage and /PostMessage/Post-Message in App1(Api) for every 5000MS
-2. /PostMessage of App1 API makes call to another API App3(/PostMessage) and it will add the data to SQL DB.
-3. /PostMessage/Post-Message of APP1 API will send a message to Kafka topic "Purchase" and returns a response.
-4. App2 which is a console application which will consume message from Kafka topic "Purchase" and sends it to App3 API(/PostMessage/Post-Message).
-5. /PostMessage/Post-Message of App3 API will send message to Kafka topic "Purchase2" and returns response.
+1. Executor is the worker service which makes 2 http post call to /PostMessage and /Message/Post-Message in App1(Api) for every 5000MS
+2. /Message of App1 API makes call to another API App3(/PostMessage) and it will add the data to SQL DB.
+3. /Message/Post-Message of APP1 API will send a message to Kafka topic "Purchase" and returns a response.
+4. App2 which is a console application which will consume message from Kafka topic "Purchase" and sends it to App3 API(/Message/Post-Message).
+5. /Message/Post-Message of App3 API will send message to Kafka topic "Purchase2" and returns response.
 6. App4 worker service will consume data from Kafka topic "Purchase2" and saves it in Redis cache.
 
 ### PublishMessage end point flow
