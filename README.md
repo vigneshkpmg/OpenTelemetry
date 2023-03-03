@@ -2,7 +2,7 @@
 
 Its a list of sample applications involving interactions between each other to mimic the behaviour of
 a micro services. This application uses 2 types of communication for interaction, one is rest based
-http protocol and other one is asynchronous communication using kafka.
+http protocol and other one is asynchronous communication using kafka. The goal is to build micro service observability stack with dot.net and not to design API's, so the example API are not the right way to design!!
 
 1. It uses open telemetry API and its Dot.net SDK for tracing.
 2. It uses available open telemetry instrumentation library for asp.et core, http calls and SQL etc.
@@ -21,7 +21,7 @@ http protocol and other one is asynchronous communication using kafka.
 4. Go to http://localhost:9090/ to check for metrics in prometheus or http://localhost:3000/ and select Prometheus as data source.
 5. Go to http://localhost:3000/ for grafana and select Loki for logs, tempo for tracing and Prometheus as data source for metrics
 
-## Micro service Architecture
+## Micro service Architecture(bit confusing!! read below explaination)
 
 ![](Images/Blank%20diagram.jpeg)
 
