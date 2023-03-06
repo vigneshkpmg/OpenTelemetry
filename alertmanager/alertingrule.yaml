@@ -1,0 +1,12 @@
+groups:
+  - name: alertingrule
+    interval: 1s
+    rules:
+      - alert: appName
+        expr: count(http_requests_received_total{appName="App1", code!="201", code!="200"})>0
+        for: 10s
+        labels:
+          severity: critical
+        annotations:
+          summary: "Http request failing for app1"
+          description: "Requests are failing in App1"

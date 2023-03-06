@@ -33,7 +33,7 @@ public class Worker : BackgroundService
                     new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8,"application/json"), stoppingToken);
                var response1 =await httpClient.PostAsync($"{_configuration.GetValue<string>("ApiUrl")}/publish-message",
                     new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8,"application/json"), stoppingToken);
-                _logger.LogInformation("Worker processing record: {Count}", count);
+                _logger.LogInformation("Worker processing record: {Count} and time:{Time}", count, DateTime.Now);
                 await Task.Delay(5000, stoppingToken);
                 count++;
             }

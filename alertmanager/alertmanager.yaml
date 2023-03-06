@@ -1,0 +1,18 @@
+# alertmanager.yml
+route:
+  group_by: [ 'endpoint']
+  routes:
+    - match:
+        alertname: appName
+  receiver: 'tranque-slack-hook'
+
+receivers:
+  - name: 'tranque-slack-hook'
+    slack_configs:
+      - api_url: "https://hooks.slack.com/services/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"
+        title_link: ""
+        text: "http requests are failing"
+        channel: '#test-alerts'
+        title: "{{ .CommonAnnotations.summary }}"
+        
+        

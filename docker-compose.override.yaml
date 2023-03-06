@@ -2,6 +2,7 @@ version: "3.9"
 volumes:
   prometheus_data: {}
   grafana_data: {}
+  alertmanager-data:
 
 services:
   sql:
@@ -46,6 +47,7 @@ services:
     volumes:
       - ./prometheus:/etc/prometheus
       - prometheus_data:/prometheus
+      - ./alertmanager/alertingrule.yaml:/etc/prometheus/alertingrule.yaml
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--storage.tsdb.path=/prometheus"
@@ -125,12 +127,15 @@ services:
       echo -e 'Successfully created the following topics:'
       kafka-topics --bootstrap-server broker:29092 --list
       "
-#  promtail:
-#    image: grafana/promtail:2.7.3
-#    volumes:
-#      - ./loki/:/var/log/
-#      - ./config:/etc/promtail/
-#    ports:
-#      - "9080:9080"
-#    command: -config.file=/etc/promtail/promtail.yaml
+  alertManager:
+    ports:
+      - 9093:9093
+    volumes:
+      - ./alertmanager:/config
+      - alertmanager-data:/data
+    restart: always
+    command: ["--config.file=/config/alertmanager.yaml"]
+      
+
+
 

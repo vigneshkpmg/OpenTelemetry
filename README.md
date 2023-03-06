@@ -10,7 +10,7 @@ http protocol and other one is asynchronous communication using kafka. The goal 
 4. It Uses Open telemetry exporter for collection of all the traces.
 5. It uses Prometheus for metrics collection and it is integrated with Grafana as a front end to display the metrics.
 6. It uses grafana as the backend for setting up of dashboards.
-7. Uses Prometheus Alerts manager for sending alerts(yet to be implemented).
+7. Uses Prometheus Alerts manager for sending alerts.
 8. All data is getting stored locally now but can be integrated with different data source. For that, please look the documentation for each.
 
 ## How to set up
@@ -86,6 +86,12 @@ inter service communications.
 ![](Images/Grafana%20Loki.png)
 
 ![](Images/Grafana%20Loki1.png)
+
+## Alerting
+
+I have used prometheus alert manager for triggering alerts when there is issue based on the metrics which is getting published. We can manage those alerts from Grafana dashboard as well.
+
+![](Images/Alert.png)
 
 Reference:
 [Open Telemetry](https://opentelemetry.io/docs/)
